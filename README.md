@@ -1,4 +1,77 @@
-HNify
-=====
+![HNify](https://raw.github.com/thekarangoel/HackerNewsAPI/master/HN.jpg)
 
-Hacker News REST API
+Unofficial REST API for [Hacker News](https://news.ycombinator.com/). Built using [HackerNewsAPI](https://github.com/thekarangoel/HackerNewsAPI).
+
+
+[Donate](https://www.gittip.com/Karan%20Goel/)
+=============
+
+If you love and use *HNify*, please consider [donating via gittip](https://www.gittip.com/Karan%20Goel/), or [flattring me](https://flattr.com/profile/thekarangoel). Any support is appreciated!
+
+Usage
+==========
+
+**Base URL:** [http://hnify.herokuapp.com](http://hnify.herokuapp.com)
+
+**Output:** JSON
+
+### `/get/top`
+
+Returns stories from the front page of HN.
+
+### `/get/newest`
+
+Returns stories from the newest page of HN.
+
+### `/get/best`
+
+Returns stories from the best page of HN.
+
+--------
+
+### Example
+
+    karan:$ curl -i http://hnify.herokuapp.com/get/newest
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    Date: Tue, 29 Oct 2013 06:23:39 GMT
+    Server: gunicorn/18.0
+    Content-Length: 16562
+    Connection: keep-alive
+    
+    {
+      "stories": [
+        {
+          "comments_link": "http://news.ycombinator.com/item?id=6632337", 
+          "domain": "independent.co.uk", 
+          "is_self": false, 
+          "link": "http://www.independent.co.uk/news/science/lifi-breakthrough-internet-connections-using-light-bulbs-are-250-times-faster-than-broadband-8909320.html", 
+          "num_comments": 0, 
+          "points": 1, 
+          "published_time": "1 minute ago", 
+          "rank": 1, 
+          "story_id": 6632337, 
+          "submitter": "yapcguy", 
+          "submitter_profile": "http://news.ycombinator.com/user?id=yapcguy", 
+          "title": "Li-Fi: Internet connections using light bulbs are 250 x faster than broadband"
+        }, 
+        {
+          "comments_link": "http://news.ycombinator.com/item?id=6632335", 
+          "domain": "github.com", 
+          "is_self": false, 
+          "link": "https://github.com/postmodern/chruby", 
+          "num_comments": 0, 
+          "points": 2, 
+          "published_time": "1 minute ago", 
+          "rank": 2, 
+          "story_id": 6632335, 
+          "submitter": "michaelrkn", 
+          "submitter_profile": "http://news.ycombinator.com/user?id=michaelrkn", 
+          "title": "Chruby: a lightweight, elegant RVM alternative"
+        }, 
+        <-- snip -->
+
+Contribute
+========
+
+If you want to add any new features, or improve existing ones, feel free to send a pull request!
