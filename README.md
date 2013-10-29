@@ -1,5 +1,7 @@
 ![HNify](https://raw.github.com/thekarangoel/HackerNewsAPI/master/HN.jpg)
 
+**Works fine locally, but gives timeout on Heroku. Probably needs caching.**
+
 Unofficial REST API for [Hacker News](https://news.ycombinator.com/). Built using [HackerNewsAPI](https://github.com/thekarangoel/HackerNewsAPI).
 
 
@@ -7,6 +9,11 @@ Unofficial REST API for [Hacker News](https://news.ycombinator.com/). Built usin
 =============
 
 If you love and use *HNify*, please consider [donating via gittip](https://www.gittip.com/Karan%20Goel/), or [flattring me](https://flattr.com/profile/thekarangoel). Any support is appreciated!
+
+Start
+=====
+
+    $ python app.py
 
 Usage
 ==========
