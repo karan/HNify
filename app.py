@@ -38,5 +38,12 @@ def not_found(error):
     '''
     return make_response(jsonify( { 'error': 'Not found' } ), 404)
 
+@app.errorhandler(503)
+def not_found(error):
+    '''
+    Returns a jsonified 503 error message instead of a HTTP 404 error.
+    '''
+    return make_response(jsonify( { 'error': 'Request times out' } ), 503)
+
 if __name__ == '__main__':
     app.run(debug=True)
