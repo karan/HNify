@@ -1,10 +1,10 @@
 Flask==0.10.1
-HackerNews==1.5.7
+HackerNews==1.5.9
 Jinja2==2.7.1
 MarkupSafe==0.18
 Werkzeug==0.9.4
 beautifulsoup4==4.3.2
+gunicorn==18.0
 itsdangerous==0.23
 requests==2.0.1
 wsgiref==0.1.2
-gunicorn

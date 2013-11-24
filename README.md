@@ -1,6 +1,6 @@
-![HNify](https://raw.github.com/thekarangoel/HackerNewsAPI/master/HN.jpg)
+![HNify](https://raw.github.com/karan/HackerNewsAPI/master/HN.jpg)
 
-Unofficial REST API for [Hacker News](https://news.ycombinator.com/). Built using [HackerNewsAPI](https://github.com/thekarangoel/HackerNewsAPI).
+Unofficial REST API for [Hacker News](https://news.ycombinator.com/). Built using [HackerNewsAPI](https://github.com/karan/HackerNewsAPI).
 
 
 [Donate](https://www.gittip.com/Karan%20Goel/)

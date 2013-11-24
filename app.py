@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/bin/env python
 
 from flask import Flask, jsonify, make_response
 from hn import HN
@@ -10,7 +10,7 @@ def index():
     '''
     This page is displayed when index page is requested.
     '''
-    return '''<b>Check out <a href="https://github.com/thekarangoel/HNify">HNify on Github</a>.</b>'''
+    return '''<b>Check out <a href="https://github.com/karan/HNify">HNify on Github</a>.</b>'''
 
 @app.route('/get/top', methods = ['GET'])
 def get_top():
