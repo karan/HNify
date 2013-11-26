@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from flask import Flask, jsonify, make_response
+from flask import Flask, jsonify, make_response, render_template, redirect
 from hn import HN
 import time
 
@@ -18,7 +18,7 @@ def index():
     '''
     This page is displayed when index page is requested.
     '''
-    return '''<b>Check out <a href="https://github.com/karan/HNify">HNify on Github</a>.</b>'''
+    return render_template('main.html')
 
 @app.route('/get/top', methods = ['GET'])
 def get_top():
