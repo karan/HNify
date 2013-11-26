@@ -1,0 +1,44 @@
+body {
+    color: #828282;
+    font-family: Verdana;
+    font-size: 10pt;
+}
+td {
+    color: #000000;
+    font-family: Verdana;
+    font-size: 10pt;
+}
+a:link {
+    color: #000000;
+    text-decoration: none;
+}
+a:visited {
+    color: #000099;
+    text-decoration: none;
+}
+.default {
+    color: #000000;
+    font-family: Verdana;
+    font-size: 10pt;
+}
+.pagetop {
+    color: #000000;
+    font-family: Verdana;
+    font-size: 10pt;
+}
+code {
+    color: #000000;
+    font-family: courier;
+    font-size: 10pt;
+}
+.pagebreak {
+    page-break-before: always;
+}
+pre {
+    max-width: 600px;
+    overflow: auto;
+    padding: 2px;
+}
+pre:hover {
+    overflow: auto;
+}

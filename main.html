@@ -1,0 +1,73 @@
+<html><head><link rel="stylesheet" type="text/css" href="main.css">
+<title>HNify</title></head><body><center><table border=0 cellpadding=0 cellspacing=0 width="85%" bgcolor=#f6f6ef>
+<tr><td bgcolor=#ff6600><table border=0 cellpadding=0 cellspacing=0 width="100%" style="padding:2px">
+<tr><td style="width:18px;padding-right:4px">
+<td style="line-height:12pt; height:10px;">
+<span class="pagetop">
+<b><a href="http://hnify.herokuapp.com">HNify</a></b> An unofficial REST API for <a href="https://news.ycombinator.com/">Hacker News</a> </span></td>
+<td style="text-align:right;padding-right:4px;"><span class="pagetop">Built using <a href="https://github.com/karan/HackerNewsAPI">HackerNewsAPI</a>
+<td style="text-align:right;padding-right:4px;"></td></tr></table></td></tr>
+<tr style="height:10px"></tr><tr><td>
+
+<UL>
+<h1>Usage:</h1>
+<b>Base URL:</b> <a href="http://hnify.herokuapp.com">http://hnify.herokuapp.com</a>
+<p><b>Output:</b> JSON
+<UL>
+<li><p><h2>/get/top</h2>
+Returns stories from the front page of HN.
+<li><p><h2>/get/newest</h2>
+Returns stories from the newest page of HN.
+<li><p><h2>/get/best</h2>
+Returns stories from the best page of HN.
+</UL>
+<h1>Example:</h1>
+<UL>
+<pre><code>
+karan:$ curl -i http://hnify.herokuapp.com/get/newest
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Tue, 29 Oct 2013 06:23:39 GMT
+Server: gunicorn/18.0
+Content-Length: 16562
+Connection: keep-alive
+
+{
+  "stories": [
+    {
+      "comments_link": "http://news.ycombinator.com/item?id=6632337", 
+      "domain": "independent.co.uk", 
+      "is_self": false, 
+      "link": "http://www.independent.co.uk/news/science/lifi-breakthrough-internet-connections-using-light-bulbs-are-250-times-faster-than-broadband-8909320.html", 
+      "num_comments": 0, 
+      "points": 1, 
+      "published_time": "1 minute ago", 
+      "rank": 1, 
+      "story_id": 6632337, 
+      "submitter": "yapcguy", 
+      "submitter_profile": "http://news.ycombinator.com/user?id=yapcguy", 
+      "title": "Li-Fi: Internet connections using light bulbs are 250 x faster than broadband"
+    }, 
+    {
+      "comments_link": "http://news.ycombinator.com/item?id=6632335", 
+      "domain": "github.com", 
+      "is_self": false, 
+      "link": "https://github.com/postmodern/chruby", 
+      "num_comments": 0, 
+      "points": 2, 
+      "published_time": "1 minute ago", 
+      "rank": 2, 
+      "story_id": 6632335, 
+      "submitter": "michaelrkn", 
+      "submitter_profile": "http://news.ycombinator.com/user?id=michaelrkn", 
+      "title": "Chruby: a lightweight, elegant RVM alternative"
+    }, 
+    <-- snip -->
+</pre></code>
+</UL>
+<h1>Contribute:</h1>
+If you want to add any new features, or improve existing ones, feel free to send a pull request!
+<br><br>
+<center><a href="https://github.com/karan/HNify">Check it out on Github</a><br><br>
+</center></td></tr></table></center></body></html>
