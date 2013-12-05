@@ -56,14 +56,14 @@ def not_found(error):
     '''
     Returns a jsonified 404 error message instead of a HTTP 404 error.
     '''
-    return make_response(jsonify( { 'error': 'Not found' } ), 404)
+    return make_response(jsonify({ 'steve_martin': 'A day without sunshine is like, you know, night.' }), 404)
 
 @app.errorhandler(503)
 def not_found(error):
     '''
     Returns a jsonified 503 error message instead of a HTTP 404 error.
     '''
-    return make_response(jsonify( { 'error': 'Request timed out' } ), 503)
+    return make_response(jsonify({ 'einstein': 'If the facts don\'t fit the theory, change the facts.' }), 503)
 
 if __name__ == '__main__':
     app.run(debug=True)
