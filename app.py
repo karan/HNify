@@ -1,16 +1,27 @@
 #!/usr/bin/env python
 
-from flask import Flask, jsonify, make_response, render_template, redirect
-from hn import HN
 import time
 
+from hn import HN
+from flask import Flask, jsonify, make_response, render_template, redirect
+
 app = Flask(__name__)
-temp_cache = {'top' : {'response_json' : None,
-                       'time' : time.time()},
-              'best' : {'response_json' : None,
-                       'time' : time.time()},
-              'newest' : {'response_json' : None,
-                       'time' : time.time()}}
+temp_cache = {
+    'top': {
+        'response_json' : None,
+        'time' : time.time()
+        },
+    'best': {
+        'response_json' : None,
+        'time' : time.time()
+        },
+    'newest': {
+        'response_json' : None,
+        'time' : time.time()
+        }
+    }
+
+# cache time to live in seconds
 timeout = 300
 
 @app.route('/')
