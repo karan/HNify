@@ -22,7 +22,7 @@ temp_cache = {
     }
 
 # cache time to live in seconds
-timeout = 300
+timeout = 600
 
 @app.route('/')
 def index():
