@@ -2,12 +2,6 @@
 
 Unofficial REST API for [Hacker News](https://news.ycombinator.com/). Built using [HackerNewsAPI](https://github.com/karan/HackerNewsAPI).
 
-
-[Donate](https://www.gittip.com/Karan%20Goel/)
-=============
-
-If you love and use *HNify*, please consider [donating via gittip](https://www.gittip.com/Karan%20Goel/), or [flattring me](https://flattr.com/profile/thekarangoel). Any support is appreciated!
-
 Start
 =====
 
@@ -40,7 +34,7 @@ Returns currently trending topics from HN.
 ![](https://blockchain.info/Resources/buttons/donate_64.png)
 =============
 
-If Hacker News API has helped you in any way, and you'd like to help the developer, please consider donating.
+If HNify has helped you in any way, and you'd like to help the developer, please consider donating.
 
 **- BTC: [19dLDL4ax7xRmMiGDAbkizh6WA6Yei2zP5](http://i.imgur.com/bAQgKLN.png)**
 
