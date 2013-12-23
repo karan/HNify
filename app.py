@@ -62,7 +62,7 @@ def get_top():
         return jsonify(temp_cache['top']['response_json'])
     else:
         hn = HN()
-        temp_cache['top']['response_json'] = {'stories': hn.get_stories()}
+        temp_cache['top']['response_json'] = {'stories': serialize(hn.get_stories())}
         temp_cache['top']['time'] = time.time()
         return jsonify(temp_cache['top']['response_json'])
 
@@ -79,7 +79,7 @@ def get_stories(story_type):
         return temp_cache[story_type]['response_json']
     else:
         hn = HN()
-        temp_cache[story_type]['response_json'] = {'stories': hn.get_stories(story_type=story_type)}
+        temp_cache[story_type]['response_json'] = {'stories': serialize(hn.get_stories(story_type=story_type))}
         temp_cache[story_type]['time'] = time.time()
         return jsonify(temp_cache[story_type]['response_json'])
 
@@ -138,7 +138,32 @@ def get_trends():
     
     grams = Counter(one_grams).most_common() + Counter(two_grams).most_common()
     return [{'phrase': phrase[0], 'count': phrase[1]} for phrase in grams if phrase[1] > 1]
+     
+def serialize(stories):
+    '''
+    Takes a list of Story objects and returns a list of dict's.
+    '''
+    result = []
     
-    
+    for story in stories:
+        result.append(
+            {
+                "comments_link": story.comments_link, 
+                "domain": story.domain, 
+                "is_self": story.is_self, 
+                "link": story.link,
+                "num_comments": story.num_comments, 
+                "points": story.points, 
+                "published_time": story.published_time, 
+                "rank": story.rank, 
+                "story_id": story.story_id, 
+                "submitter": story.submitter, 
+                "submitter_profile": story.submitter_profile, 
+                "title": story.title
+            }
+        )
+    return result
+
+
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
