@@ -28,7 +28,7 @@ temp_cache = {
 }
 
 # cache time to live in seconds
-timeout = 600
+timeout = 900
 
 stopwords = ["a","able","about","across","after","all","almost","also","am",
              "among","an","and","any","are","as","at","be","because","been",
@@ -117,7 +117,7 @@ def get_trends():
     '''
     hn = HN()
     
-    titles = [story.title for story in hn.get_stories(page_limit=4)]
+    titles = [story.title for story in hn.get_stories(page_limit=2)]
 
     one_grams = [] # list of 1-grams
     two_grams = [] # list of 2-grams
