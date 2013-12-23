@@ -5,7 +5,9 @@ Unofficial REST API for [Hacker News](https://news.ycombinator.com/). Built usin
 Start
 =====
 
-    $ python app.py
+    $ brew install memcached    # install memcached
+    $ memcached -vv             # start memcached server
+    $ python app.py             # start the api
 
 Usage
 ==========
@@ -85,6 +87,7 @@ If HNify has helped you in any way, and you'd like to help the developer, please
           "title": "Chruby: a lightweight, elegant RVM alternative"
         }, 
         <-- snip -->
+
 
 Contribute
 ========

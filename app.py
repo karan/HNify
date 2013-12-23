@@ -3,20 +3,21 @@
 import time
 import re
 from collections import Counter
+import os
 
 from hn import HN
 from flask import Flask, jsonify, make_response, render_template, redirect
-import memcache
+import bmemcached as memcache
 
 
 app = Flask(__name__)
 
-
 # cache time to live in seconds
 timeout = 600
 
-
-mc = memcache.Client(['127.0.0.1:11211'], debug=1)
+mc = memcache.Client(os.environ.get('MEMCACHEDCLOUD_SERVERS'),
+                       os.environ.get('MEMCACHEDCLOUD_USERNAME'),
+                       os.environ.get('MEMCACHEDCLOUD_PASSWORD'))
 mc.set('top', None, time=timeout)
 mc.set('best', None, time=timeout)
 mc.set('newest', None, time=timeout)
