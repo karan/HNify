@@ -8,3 +8,4 @@ gunicorn==18.0
 itsdangerous==0.23
 requests==2.1.0
 wsgiref==0.1.2
+newrelic
