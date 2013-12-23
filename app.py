@@ -6,29 +6,22 @@ from collections import Counter
 
 from hn import HN
 from flask import Flask, jsonify, make_response, render_template, redirect
+import memcache
+
 
 app = Flask(__name__)
-temp_cache = {
-    'top': {
-        'response_json' : None,
-        'time' : time.time()
-        },
-    'best': {
-        'response_json' : None,
-        'time' : time.time()
-        },
-    'newest': {
-        'response_json' : None,
-        'time' : time.time()
-        },
-    'trends': {
-        'response_json': None,
-        'time': time.time()
-    }
-}
+
 
 # cache time to live in seconds
-timeout = 900
+timeout = 600
+
+
+mc = memcache.Client(['127.0.0.1:11211'], debug=1)
+mc.set('top', None, time=timeout)
+mc.set('best', None, time=timeout)
+mc.set('newest', None, time=timeout)
+mc.set('trends', None, time=timeout)
+
 
 stopwords = ["a","able","about","across","after","all","almost","also","am",
              "among","an","and","any","are","as","at","be","because","been",
@@ -45,6 +38,7 @@ stopwords = ["a","able","about","across","after","all","almost","also","am",
              "will","with","would","yet","you","your", 'show hn', 'ask hn',
              'hn', 'show', 'ask']
 
+
 @app.route('/')
 def index():
     '''
@@ -57,14 +51,13 @@ def get_top():
     '''
     Returns stories from the front page of HN.
     '''
-    if temp_cache['top']['response_json'] is not None \
-       and temp_cache['top']['time'] + timeout < time.time():
-        return jsonify(temp_cache['top']['response_json'])
+    temp_cache = mc.get('top') # get the cache from memory
+    if temp_cache is not None:
+        return jsonify(temp_cache)
     else:
         hn = HN()
-        temp_cache['top']['response_json'] = {'stories': serialize(hn.get_stories())}
-        temp_cache['top']['time'] = time.time()
-        return jsonify(temp_cache['top']['response_json'])
+        mc.set('top', {'stories': serialize(hn.get_stories())}, time=timeout)
+        return jsonify(mc.get('top'))
 
 @app.route('/get/<story_type>', methods=['GET'])
 def get_stories(story_type):
@@ -74,27 +67,27 @@ def get_stories(story_type):
     \tnewest
     \tbest
     '''
-    if temp_cache[story_type]['response_json'] is not None \
-       and temp_cache[story_type]['time'] + timeout < time.time():
-        return temp_cache[story_type]['response_json']
+    story_type = str(story_type)
+    temp_cache = mc.get(story_type) # get the cache from memory
+    if temp_cache is not None:
+        return jsonify(temp_cache)
     else:
         hn = HN()
-        temp_cache[story_type]['response_json'] = {'stories': serialize(hn.get_stories(story_type=story_type))}
-        temp_cache[story_type]['time'] = time.time()
-        return jsonify(temp_cache[story_type]['response_json'])
+        mc.set(story_type, {'stories': serialize(hn.get_stories(story_type=story_type))}, time=timeout)
+        return jsonify(mc.get(story_type))
 
 @app.route('/get/trends', methods=['GET'])
 def trends():
     '''
     Returns currently trending topics.
     '''
-    if temp_cache['trends']['response_json'] is not None \
-       and temp_cache['trends']['time'] + timeout < time.time():
-        return temp_cache['trends']['response_json']
+    temp_cache = mc.get('trends') # get the cache from memory
+    if temp_cache is not None:
+        return jsonify(temp_cache)
     else:
-        temp_cache['trends']['response_json'] = {'trends': get_trends()}
-        temp_cache['trends']['time'] = time.time()
-        return jsonify(temp_cache['trends']['response_json'])
+        hn = HN()
+        mc.set('trends', {'trends': get_trends()}, time=timeout)
+        return jsonify(mc.get('trends'))
 
 @app.errorhandler(404)
 def not_found(error):
@@ -117,7 +110,7 @@ def get_trends():
     '''
     hn = HN()
     
-    titles = [story.title for story in hn.get_stories(page_limit=1)]
+    titles = [story.title for story in hn.get_stories(page_limit=3)]
 
     one_grams = [] # list of 1-grams
     two_grams = [] # list of 2-grams
