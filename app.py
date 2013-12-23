@@ -117,7 +117,7 @@ def get_trends():
     '''
     hn = HN()
     
-    titles = [story.title for story in hn.get_stories(page_limit=3)]
+    titles = [story.title for story in hn.get_stories(page_limit=1)]
 
     one_grams = [] # list of 1-grams
     two_grams = [] # list of 2-grams

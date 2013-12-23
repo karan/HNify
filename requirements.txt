@@ -1,11 +1,6 @@
 Flask==0.10.1
-HackerNews==1.7.1
-Jinja2==2.7.1
-MarkupSafe==0.18
-Werkzeug==0.9.4
+HackerNews==1.7.2
 beautifulsoup4==4.3.2
 gunicorn==18.0
-itsdangerous==0.23
 requests==2.1.0
-wsgiref==0.1.2
 newrelic
