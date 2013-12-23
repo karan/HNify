@@ -2,12 +2,15 @@
 
 Unofficial REST API for [Hacker News](https://news.ycombinator.com/). Built using [HackerNewsAPI](https://github.com/karan/HackerNewsAPI).
 
+Now uses memcached for increased performace!
+
 Start
 =====
 
-    $ brew install memcached    # install memcached
-    $ memcached -vv             # start memcached server
-    $ python app.py             # start the api
+    $ brew install memcached            # install memcached
+    $ pip install -r requirements.txt   # install dependencies
+    $ memcached -vv                     # start memcached server
+    $ python app.py                     # start the api
 
 Usage
 ==========
