@@ -19,21 +19,37 @@ Usage
 
 **Output:** JSON
 
-### `/get/top`
+### Get stories from top page
 
-Returns stories from the front page of HN.
+`GET /get/top`
 
-### `/get/newest`
+**Parameters: **
 
-Returns stories from the newest page of HN.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| limit | integer | Only at most these many stories, at least 30 |
 
-### `/get/best`
+### Get stories from newest page
 
-Returns stories from the best page of HN.
+`GET /get/newest`
 
-### `/get/trends`
+**Parameters: **
 
-Returns currently trending topics from HN.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| limit | integer | Only at most these many stories, at least 30 |
+
+### Get stories from best page
+
+**Parameters: **
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| limit | integer | Only at most these many stories, at least 30 |
+
+### Currently trending topics on HN
+
+`GET /get/trends`
 
 
 ![](https://blockchain.info/Resources/buttons/donate_64.png)
@@ -45,7 +61,7 @@ If HNify has helped you in any way, and you'd like to help the developer, please
 
 **- Flattr: [https://flattr.com/profile/thekarangoel](https://flattr.com/profile/thekarangoel)**
 
-**- Dogecoin: DGJxQkPqfxGkPYazHdPpAfatyagpDdG4qJ**
+**- DOGE: DGJxQkPqfxGkPYazHdPpAfatyagpDdG4qJ**
 
 --------
 

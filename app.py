@@ -6,7 +6,7 @@ from collections import Counter
 import os
 
 from hn import HN
-from flask import Flask, jsonify, make_response, render_template, redirect
+from flask import Flask, jsonify, make_response, render_template, redirect, request
 import bmemcached as memcache
 
 
@@ -15,9 +15,10 @@ app = Flask(__name__)
 # cache time to live in seconds
 timeout = 600
 
-mc = memcache.Client(os.environ.get('MEMCACHEDCLOUD_SERVERS'),
+mc = memcache.Client(os.environ.get('MEMCACHEDCLOUD_SERVERS').split(','),
                        os.environ.get('MEMCACHEDCLOUD_USERNAME'),
                        os.environ.get('MEMCACHEDCLOUD_PASSWORD'))
+
 mc.set('top', None, time=timeout)
 mc.set('best', None, time=timeout)
 mc.set('newest', None, time=timeout)
@@ -47,17 +48,20 @@ def index():
     '''
     return render_template('main.html')
 
-@app.route('/get/top', methods=['GET'])
+@app.route('/get/top/', methods=['GET'])
 def get_top():
     '''
     Returns stories from the front page of HN.
     '''
+    limit = request.args.get('limit')
     temp_cache = mc.get('top') # get the cache from memory
-    if temp_cache is not None:
-        return jsonify(temp_cache)
+    if temp_cache is not None and len(temp_cache['stories']) <= limit:
+        # we already have enough in cache
+        return jsonify({'stories': temp_cache['stories'][:limit]})
     else:
         hn = HN()
-        mc.set('top', {'stories': serialize(hn.get_stories())}, time=timeout)
+        stories = [story for story in hn.get_stories(limit=limit)]
+        mc.set('top', {'stories': serialize(stories)}, time=timeout)
         return jsonify(mc.get('top'))
 
 @app.route('/get/<story_type>', methods=['GET'])
@@ -69,12 +73,14 @@ def get_stories(story_type):
     \tbest
     '''
     story_type = str(story_type)
+    limit = request.args.get('limit')
     temp_cache = mc.get(story_type) # get the cache from memory
-    if temp_cache is not None:
-        return jsonify(temp_cache)
+    if temp_cache is not None and len(temp_cache['stories']) <= limit:
+        return jsonify({'stories': temp_cache['stories'][:limit]})
     else:
         hn = HN()
-        mc.set(story_type, {'stories': serialize(hn.get_stories(story_type=story_type))}, time=timeout)
+        stories = [story for story in hn.get_stories(story_type=story_type, limit=limit)]
+        mc.set(story_type, {'stories': serialize(stories)}, time=timeout)
         return jsonify(mc.get(story_type))
 
 @app.route('/get/trends', methods=['GET'])
@@ -111,7 +117,7 @@ def get_trends():
     '''
     hn = HN()
     
-    titles = [story.title for story in hn.get_stories(page_limit=3)]
+    titles = [story.title for story in hn.get_stories(limit=90)]
 
     one_grams = [] # list of 1-grams
     two_grams = [] # list of 2-grams
