@@ -26,31 +26,31 @@ Usage
 
 #### `GET /get/top`
 
-**Parameters: **
+**Parameters:**
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| `limit` | integer | Only at most these many stories, at least 30 |
+| `limit` | integer | Return only at most these many stories, at least 30 |
 
 ### Get stories from newest page
 
 #### `GET /get/newest`
 
-**Parameters: **
+**Parameters:**
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| `limit` | integer | Only at most these many stories, at least 30 |
+| `limit` | integer | Return only at most these many stories, at least 30 |
 
 ### Get stories from best page
 
 #### `GET /get/best`
 
-**Parameters: **
+**Parameters:**
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| `limit` | integer | Only at most these many stories, at least 30 |
+| `limit` | integer | Return only at most these many stories, at least 30 |
 
 ### Currently trending topics on HN
 
