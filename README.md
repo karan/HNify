@@ -1,3 +1,6 @@
+HNify
+=====
+
 ![HNify](https://raw.github.com/karan/HackerNewsAPI/master/HN.jpg)
 
 Unofficial REST API for [Hacker News](https://news.ycombinator.com/). Built using [HackerNewsAPI](https://github.com/karan/HackerNewsAPI).
@@ -21,35 +24,37 @@ Usage
 
 ### Get stories from top page
 
-`GET /get/top`
+#### `GET /get/top`
 
 **Parameters: **
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| limit | integer | Only at most these many stories, at least 30 |
+| `limit` | integer | Only at most these many stories, at least 30 |
 
 ### Get stories from newest page
 
-`GET /get/newest`
+#### `GET /get/newest`
 
 **Parameters: **
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| limit | integer | Only at most these many stories, at least 30 |
+| `limit` | integer | Only at most these many stories, at least 30 |
 
 ### Get stories from best page
 
+#### `GET /get/best`
+
 **Parameters: **
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| limit | integer | Only at most these many stories, at least 30 |
+| `limit` | integer | Only at most these many stories, at least 30 |
 
 ### Currently trending topics on HN
 
-`GET /get/trends`
+#### `GET /get/trends`
 
 
 ![](https://blockchain.info/Resources/buttons/donate_64.png)
@@ -106,7 +111,8 @@ If HNify has helped you in any way, and you'd like to help the developer, please
           "title": "Chruby: a lightweight, elegant RVM alternative"
         }, 
         <-- snip -->
-
+        ]
+    }
 
 Contribute
 ========
