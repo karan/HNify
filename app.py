@@ -53,7 +53,7 @@ def get_top():
     '''
     Returns stories from the front page of HN.
     '''
-    limit = request.args.get('limit')
+    limit = int(request.args.get('limit'))
     temp_cache = mc.get('top') # get the cache from memory
     if temp_cache is not None and len(temp_cache['stories']) <= limit:
         # we already have enough in cache
@@ -73,7 +73,7 @@ def get_stories(story_type):
     \tbest
     '''
     story_type = str(story_type)
-    limit = request.args.get('limit')
+    limit = int(request.args.get('limit'))
     temp_cache = mc.get(story_type) # get the cache from memory
     if temp_cache is not None and len(temp_cache['stories']) <= limit:
         return jsonify({'stories': temp_cache['stories'][:limit]})
