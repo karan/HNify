@@ -15,13 +15,10 @@ app = Flask(__name__)
 # cache time to live in seconds
 timeout = 600
 
-'''
+
 mc = memcache.Client(os.environ.get('MEMCACHEDCLOUD_SERVERS').split(','),
                        os.environ.get('MEMCACHEDCLOUD_USERNAME'),
                        os.environ.get('MEMCACHEDCLOUD_PASSWORD'))
-'''
-
-mc = memcache.Client('pub-memcache-19677.us-east-1-4.1.ec2.garantiadata.com:19677', 'memcached-app18957263', 'cnGOOs8kpqvzkB0M')
 
 mc.set('top', None, time=timeout)
 mc.set('best', None, time=timeout)
@@ -65,9 +62,11 @@ def get_stories(story_type):
     story_type = str(story_type)
     limit = request.args.get('limit')
     limit = int(limit) if limit is not None else 30
+    
     temp_cache = mc.get(story_type) # get the cache from memory
-    if temp_cache is not None and len(temp_cache['stories']) <= limit:
-        print len(temp_cache['stories']), limit
+    
+    if temp_cache is not None and len(temp_cache['stories']) >= limit:
+        # we have enough in cache already
         return jsonify({'stories': temp_cache['stories'][:limit]})
     else:
         hn = HN()
