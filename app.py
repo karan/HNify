@@ -49,6 +49,7 @@ def index():
     return render_template('main.html')
 
 @app.route('/get/<story_type>', methods=['GET'])
+@app.route('/get/<story_type>/', methods=['GET'])
 def get_stories(story_type):
     '''
     Returns stories from the requested page of HN.
@@ -59,9 +60,9 @@ def get_stories(story_type):
     '''
     story_type = str(story_type)
     limit = int(request.args.get('limit'))
-    limit = int(limit) if limit is not None else None
+    limit = int(limit) if limit is not None else 30
     temp_cache = mc.get(story_type) # get the cache from memory
-    if temp_cache is not None and limit is not None and len(temp_cache['stories']) <= limit:
+    if temp_cache is not None and len(temp_cache['stories']) <= limit:
         return jsonify({'stories': temp_cache['stories'][:limit]})
     else:
         hn = HN()
