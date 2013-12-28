@@ -15,9 +15,13 @@ app = Flask(__name__)
 # cache time to live in seconds
 timeout = 600
 
+'''
 mc = memcache.Client(os.environ.get('MEMCACHEDCLOUD_SERVERS').split(','),
                        os.environ.get('MEMCACHEDCLOUD_USERNAME'),
                        os.environ.get('MEMCACHEDCLOUD_PASSWORD'))
+'''
+
+mc = memcache.Client('pub-memcache-19677.us-east-1-4.1.ec2.garantiadata.com:19677', 'memcached-app18957263', 'cnGOOs8kpqvzkB0M')
 
 mc.set('top', None, time=timeout)
 mc.set('best', None, time=timeout)
@@ -48,8 +52,8 @@ def index():
     '''
     return render_template('main.html')
 
-@app.route('/get/<story_type>', methods=['GET'])
 @app.route('/get/<story_type>/', methods=['GET'])
+@app.route('/get/<story_type>', methods=['GET'])
 def get_stories(story_type):
     '''
     Returns stories from the requested page of HN.
@@ -59,10 +63,11 @@ def get_stories(story_type):
     \tbest
     '''
     story_type = str(story_type)
-    limit = int(request.args.get('limit'))
+    limit = request.args.get('limit')
     limit = int(limit) if limit is not None else 30
     temp_cache = mc.get(story_type) # get the cache from memory
     if temp_cache is not None and len(temp_cache['stories']) <= limit:
+        print len(temp_cache['stories']), limit
         return jsonify({'stories': temp_cache['stories'][:limit]})
     else:
         hn = HN()
@@ -74,34 +79,6 @@ def get_stories(story_type):
             abort(404)
         mc.set(story_type, {'stories': serialize(stories)}, time=timeout)
         return jsonify(mc.get(story_type))
-
-@app.route('/get/trends', methods=['GET'])
-def trends():
-    '''
-    Returns currently trending topics.
-    '''
-    temp_cache = mc.get('trends') # get the cache from memory
-    if temp_cache is not None:
-        return jsonify(temp_cache)
-    else:
-        hn = HN()
-        mc.set('trends', {'trends': get_trends()}, time=timeout)
-        return jsonify(mc.get('trends'))
-
-@app.errorhandler(404)
-def not_found(error):
-    '''
-    Returns a jsonified 404 error message instead of a HTTP 404 error.
-    '''
-    return make_response(jsonify({ 'steve_martin': 'A day without sunshine is like, you know, night.' }), 404)
-
-@app.errorhandler(503)
-@app.errorhandler(500)
-def not_found(error):
-    '''
-    Returns a jsonified 503/500 error message instead of a HTTP 404 error.
-    '''
-    return make_response(jsonify({ 'einstein': 'If the facts don\'t fit the theory, change the facts.' }), 503)
 
 def get_trends():
     '''
@@ -156,6 +133,40 @@ def serialize(stories):
         )
     return result
 
+
+@app.route('/get/trends', methods=['GET'])
+def trends():
+    '''
+    Returns currently trending topics.
+    '''
+    temp_cache = mc.get('trends') # get the cache from memory
+    if temp_cache is not None:
+        return jsonify(temp_cache)
+    else:
+        hn = HN()
+        mc.set('trends', {'trends': get_trends()}, time=timeout)
+        return jsonify(mc.get('trends'))
+
+@app.errorhandler(404)
+def not_found(error):
+    '''
+    Returns a jsonified 404 error message instead of a HTTP 404 error.
+    '''
+    return make_response(jsonify({ 'error': '404 not found' }), 404)
+
+@app.errorhandler(503)
+def not_found(error):
+    '''
+    Returns a jsonified 503 error message instead of a HTTP 404 error.
+    '''
+    return make_response(jsonify({ 'error': '503 something wrong' }), 503)
+
+@app.errorhandler(500)
+def not_found(error):
+    '''
+    Returns a jsonified 500 error message instead of a HTTP 404 error.
+    '''
+    return make_response(jsonify({ 'error': '500 something wrong' }), 500)
 
 if __name__ == '__main__':
     app.run(debug=True)
