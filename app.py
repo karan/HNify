@@ -48,28 +48,12 @@ def index():
     '''
     return render_template('main.html')
 
-@app.route('/get/top/', methods=['GET'])
-def get_top():
-    '''
-    Returns stories from the front page of HN.
-    '''
-    limit = request.args.get('limit')
-    limit = int(limit) if limit is not None else None
-    temp_cache = mc.get('top') # get the cache from memory
-    if temp_cache is not None and limit is not None and len(temp_cache['stories']) <= limit:
-        # we already have enough in cache
-        return jsonify({'stories': temp_cache['stories'][:limit]})
-    else:
-        hn = HN()
-        stories = [story for story in hn.get_stories(limit=limit)]
-        mc.set('top', {'stories': serialize(stories)}, time=timeout)
-        return jsonify(mc.get('top'))
-
 @app.route('/get/<story_type>', methods=['GET'])
 def get_stories(story_type):
     '''
     Returns stories from the requested page of HN.
     story_type is one of:
+    \ttop
     \tnewest
     \tbest
     '''
@@ -81,7 +65,12 @@ def get_stories(story_type):
         return jsonify({'stories': temp_cache['stories'][:limit]})
     else:
         hn = HN()
-        stories = [story for story in hn.get_stories(story_type=story_type, limit=limit)]
+        if story_type == 'top':
+            stories = [story for story in hn.get_stories(limit=limit)]
+        elif story_type in ['newest', 'best']:
+            stories = [story for story in hn.get_stories(story_type=story_type, limit=limit)]
+        else:
+            abort(404)
         mc.set(story_type, {'stories': serialize(stories)}, time=timeout)
         return jsonify(mc.get(story_type))
 
