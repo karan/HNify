@@ -5,7 +5,7 @@ import re
 from collections import Counter
 import os
 
-from hn import HN
+from hn import *
 from flask import Flask, jsonify, make_response, render_template, redirect, request
 import bmemcached as memcache
 
@@ -24,7 +24,6 @@ mc.set('top', None, time=timeout)
 mc.set('best', None, time=timeout)
 mc.set('newest', None, time=timeout)
 mc.set('trends', None, time=timeout)
-
 
 stopwords = ["a","able","about","across","after","all","almost","also","am",
              "among","an","and","any","are","as","at","be","because","been",
@@ -132,7 +131,32 @@ def serialize(stories):
         )
     return result
 
+@app.route('/get/comments/<story_id>',methods=['GET'])
+@app.route('/get/comments/<story_id>/',methods=['GET'])
+def comments(story_id):
+    story_id = str(story_id)
+    memcache_key = "%s_comments" % (story_id)
+    temp_cache = mc.get(memcache_key) # get the cache from memory
+    result = []
 
+    if temp_cache is None:
+
+        story = Story.fromid(story_id)
+        comments = story.get_comments()
+        for comment in comments:
+            result.append(
+                {
+                    "comment_id": comment.comment_id,
+                    "level": comment.level,
+                    "user": comment.user,
+                    "time_ago": comment.time_ago,
+                    "body": comment.body,
+                    "body_html": comment.body_html
+                }
+                )
+        mc.set(memcache_key,{'results':result},time=timeout)
+
+    return jsonify(mc.get(memcache_key))
 @app.route('/get/trends', methods=['GET'])
 def trends():
     '''

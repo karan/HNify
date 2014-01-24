@@ -56,6 +56,10 @@ Usage
 
 #### `GET /get/trends`
 
+### Get comments from story id
+
+### 'GET /get/comments/<story_id>/'
+
 
 ![](https://blockchain.info/Resources/buttons/donate_64.png)
 =============
