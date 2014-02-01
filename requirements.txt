@@ -1,7 +1,7 @@
 Flask==0.10.1
-HackerNews==1.8.0
-beautifulsoup4==4.3.2
-gunicorn==18.0
-requests==2.1.0
-python-binary-memcached==0.20
+HackerNews
+beautifulsoup4
+gunicorn
+requests
+python-binary-memcached
 newrelic

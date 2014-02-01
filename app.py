@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import sys
+sys.setrecursionlimit(1000)
+
 import time
 import re
 from collections import Counter
@@ -14,7 +17,6 @@ app = Flask(__name__)
 
 # cache time to live in seconds
 timeout = 600
-
 
 mc = memcache.Client(os.environ.get('MEMCACHEDCLOUD_SERVERS').split(','),
                        os.environ.get('MEMCACHEDCLOUD_USERNAME'),
@@ -48,6 +50,7 @@ def index():
     '''
     return render_template('main.html')
 
+
 @app.route('/get/<story_type>/', methods=['GET'])
 @app.route('/get/<story_type>', methods=['GET'])
 def get_stories(story_type):
@@ -77,6 +80,46 @@ def get_stories(story_type):
             abort(404)
         mc.set(story_type, {'stories': serialize(stories)}, time=timeout)
         return jsonify(mc.get(story_type))
+
+
+@app.route('/get/comments/<story_id>', methods=['GET'])
+@app.route('/get/comments/<story_id>/', methods=['GET'])
+def comments(story_id):
+    story_id = int(story_id)
+    memcache_key = "%s_comments" % (story_id)
+
+    temp_cache = mc.get(memcache_key) # get the cache from memory
+    result = []
+
+    if temp_cache is None:
+        story = Story.fromid(story_id)
+        comments = story.get_comments()
+        for comment in comments:
+            result.append({
+                    "comment_id": comment.comment_id,
+                    "level": comment.level,
+                    "user": comment.user,
+                    "time_ago": comment.time_ago,
+                    "body": comment.body,
+                    "body_html": comment.body_html
+                })
+        mc.set(memcache_key, {'comments': result}, time=timeout)
+    return jsonify(mc.get(memcache_key))
+
+
+@app.route('/get/trends', methods=['GET'])
+def trends():
+    '''
+    Returns currently trending topics.
+    '''
+    temp_cache = mc.get('trends') # get the cache from memory
+    if temp_cache is not None:
+        return jsonify(temp_cache)
+    else:
+        hn = HN()
+        mc.set('trends', {'trends': get_trends()}, time=timeout)
+        return jsonify(mc.get('trends'))
+
 
 def get_trends():
     '''
@@ -131,44 +174,6 @@ def serialize(stories):
         )
     return result
 
-@app.route('/get/comments/<story_id>',methods=['GET'])
-@app.route('/get/comments/<story_id>/',methods=['GET'])
-def comments(story_id):
-    story_id = str(story_id)
-    memcache_key = "%s_comments" % (story_id)
-    temp_cache = mc.get(memcache_key) # get the cache from memory
-    result = []
-
-    if temp_cache is None:
-
-        story = Story.fromid(story_id)
-        comments = story.get_comments()
-        for comment in comments:
-            result.append(
-                {
-                    "comment_id": comment.comment_id,
-                    "level": comment.level,
-                    "user": comment.user,
-                    "time_ago": comment.time_ago,
-                    "body": comment.body,
-                    "body_html": comment.body_html
-                }
-                )
-        mc.set(memcache_key,{'results':result},time=timeout)
-
-    return jsonify(mc.get(memcache_key))
-@app.route('/get/trends', methods=['GET'])
-def trends():
-    '''
-    Returns currently trending topics.
-    '''
-    temp_cache = mc.get('trends') # get the cache from memory
-    if temp_cache is not None:
-        return jsonify(temp_cache)
-    else:
-        hn = HN()
-        mc.set('trends', {'trends': get_trends()}, time=timeout)
-        return jsonify(mc.get('trends'))
 
 @app.errorhandler(404)
 def not_found(error):
@@ -177,6 +182,7 @@ def not_found(error):
     '''
     return make_response(jsonify({ 'error': '404 not found' }), 404)
 
+
 @app.errorhandler(503)
 def not_found(error):
     '''
@@ -184,12 +190,14 @@ def not_found(error):
     '''
     return make_response(jsonify({ 'error': '503 something wrong' }), 503)
 
+
 @app.errorhandler(500)
 def not_found(error):
     '''
     Returns a jsonified 500 error message instead of a HTTP 404 error.
     '''
     return make_response(jsonify({ 'error': '500 something wrong' }), 500)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
