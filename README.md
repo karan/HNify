@@ -15,6 +15,18 @@ Start
     $ memcached -vv                     # start memcached server
     $ python app.py                     # start the api
 
+Deploy to Heroku
+=====
+
+    $ pip install -r requirements.txt   # install dependencies
+    $ heroku create
+    $ heroku addons:add memcachedcloud
+    $ heroku addons:add newrelic
+    $ (git add, git commit)
+    $ git push heroku master
+
+If you get an error on the memcached line, see the following [help article](https://devcenter.heroku.com/articles/config-vars).
+
 Usage
 ==========
 
@@ -58,19 +70,7 @@ Usage
 
 ### Get comments from story id
 
-### 'GET /get/comments/<story_id>/'
-
-
-![](https://blockchain.info/Resources/buttons/donate_64.png)
-=============
-
-If HNify has helped you in any way, and you'd like to help the developer, please consider donating.
-
-**- BTC: [19dLDL4ax7xRmMiGDAbkizh6WA6Yei2zP5](http://i.imgur.com/bAQgKLN.png)**
-
-**- Flattr: [https://flattr.com/profile/thekarangoel](https://flattr.com/profile/thekarangoel)**
-
-**- DOGE: DGJxQkPqfxGkPYazHdPpAfatyagpDdG4qJ**
+#### `GET /get/comments/<story_id>/`
 
 --------
 
@@ -117,6 +117,17 @@ If HNify has helped you in any way, and you'd like to help the developer, please
         <-- snip -->
         ]
     }
+
+
+Donations
+=============
+
+If HNify has helped you in any way, and you'd like to help the developer, please consider donating.
+
+**- BTC: [19dLDL4ax7xRmMiGDAbkizh6WA6Yei2zP5](http://i.imgur.com/bAQgKLN.png)**
+
+**- Flattr: [https://flattr.com/profile/thekarangoel](https://flattr.com/profile/thekarangoel)**
+
 
 Contribute
 ========
