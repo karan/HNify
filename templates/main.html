@@ -302,8 +302,8 @@ sup {
 	}
 }
 </style>
-<title>Get stories from top page</title>
-
+<title>HNify - Hacker News API</title>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax:{inlineMath:[['$$$','$$$']]}});</script><script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
 <h1>HNify</h1>
@@ -322,6 +322,18 @@ $ memcached -vv                     # start memcached server
 $ python app.py                     # start the api
 </code></pre>
 
+<h1>Deploy to Heroku</h1>
+
+<pre><code>$ pip install -r requirements.txt   # install dependencies
+$ heroku create
+$ heroku addons:add memcachedcloud
+$ heroku addons:add newrelic
+$ (git add, git commit)
+$ git push heroku master
+</code></pre>
+
+<p>If you get an error on the memcached line, see the following <a href="https://devcenter.heroku.com/articles/config-vars">help article</a>.</p>
+
 <h1>Usage</h1>
 
 <p><strong>Base URL:</strong> <a href="http://hnify.herokuapp.com">http://hnify.herokuapp.com</a></p>
@@ -332,7 +344,7 @@ $ python app.py                     # start the api
 
 <h4><code>GET /get/top</code></h4>
 
-<p><strong>Parameters: </strong></p>
+<p><strong>Parameters:</strong></p>
 
 <table>
 <thead>
@@ -346,7 +358,7 @@ $ python app.py                     # start the api
 <tr>
 <td> <code>limit</code> </td>
 <td> integer </td>
-<td> Only at most these many stories, at least 30 </td>
+<td> Return only at most these many stories, at least 30 </td>
 </tr>
 </tbody>
 </table>
@@ -356,7 +368,7 @@ $ python app.py                     # start the api
 
 <h4><code>GET /get/newest</code></h4>
 
-<p><strong>Parameters: </strong></p>
+<p><strong>Parameters:</strong></p>
 
 <table>
 <thead>
@@ -370,7 +382,7 @@ $ python app.py                     # start the api
 <tr>
 <td> <code>limit</code> </td>
 <td> integer </td>
-<td> Only at most these many stories, at least 30 </td>
+<td> Return only at most these many stories, at least 30 </td>
 </tr>
 </tbody>
 </table>
@@ -380,7 +392,7 @@ $ python app.py                     # start the api
 
 <h4><code>GET /get/best</code></h4>
 
-<p><strong>Parameters: </strong></p>
+<p><strong>Parameters:</strong></p>
 
 <table>
 <thead>
@@ -394,7 +406,7 @@ $ python app.py                     # start the api
 <tr>
 <td> <code>limit</code> </td>
 <td> integer </td>
-<td> Only at most these many stories, at least 30 </td>
+<td> Return only at most these many stories, at least 30 </td>
 </tr>
 </tbody>
 </table>
@@ -404,15 +416,9 @@ $ python app.py                     # start the api
 
 <h4><code>GET /get/trends</code></h4>
 
-<h1><img src="https://blockchain.info/Resources/buttons/donate_64.png" alt="" /></h1>
+<h3>Get comments from story id</h3>
 
-<p>If HNify has helped you in any way, and you'd like to help the developer, please consider donating.</p>
-
-<p><strong>- BTC: <a href="http://i.imgur.com/bAQgKLN.png">19dLDL4ax7xRmMiGDAbkizh6WA6Yei2zP5</a></strong></p>
-
-<p><strong>- Flattr: <a href="https://flattr.com/profile/thekarangoel">https://flattr.com/profile/thekarangoel</a></strong></p>
-
-<p><strong>- DOGE: DGJxQkPqfxGkPYazHdPpAfatyagpDdG4qJ</strong></p>
+<h4><code>GET /get/comments/&lt;story_id&gt;/</code></h4>
 
 <hr />
 
@@ -461,10 +467,18 @@ Connection: keep-alive
 }
 </code></pre>
 
+<h1>Donations</h1>
+
+<p>If HNify has helped you in any way, and you'd like to help the developer, please consider donating.</p>
+
+<p><strong>- BTC: <a href="http://i.imgur.com/bAQgKLN.png">19dLDL4ax7xRmMiGDAbkizh6WA6Yei2zP5</a></strong></p>
+
+<p><strong>- Gittip: <a href="https://www.gittip.com/karan/">https://www.gittip.com/karan/</a></strong></p>
+
+<p><strong>- Flattr: <a href="https://flattr.com/profile/thekarangoel">https://flattr.com/profile/thekarangoel</a></strong></p>
+
 <h1>Contribute</h1>
 
 <p>If you want to add any new features, or improve existing ones, feel free to send a pull request!</p>
-
-<p><a href="https://bitdeli.com/free" title="Bitdeli Badge"><img src="https://d2weczhvl823v0.cloudfront.net/karan/hnify/trend.png" alt="Bitdeli Badge" /></a></p>
 </body>
 </html>
