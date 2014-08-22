@@ -7,6 +7,7 @@ import time
 import re
 from collections import Counter
 import os
+from crossdomain import crossdomain
 
 from hn import *
 from flask import Flask, jsonify, make_response, render_template, redirect, request
@@ -44,6 +45,7 @@ stopwords = ["a","able","about","across","after","all","almost","also","am",
 
 
 @app.route('/')
+@crossdomain(origin='*')
 def index():
     '''
     This page is displayed when index page is requested.
@@ -53,6 +55,7 @@ def index():
 
 @app.route('/get/<story_type>/', methods=['GET'])
 @app.route('/get/<story_type>', methods=['GET'])
+@crossdomain(origin='*')
 def get_stories(story_type):
     '''
     Returns stories from the requested page of HN.
@@ -84,6 +87,7 @@ def get_stories(story_type):
 
 @app.route('/get/comments/<story_id>', methods=['GET'])
 @app.route('/get/comments/<story_id>/', methods=['GET'])
+@crossdomain(origin='*')
 def comments(story_id):
     story_id = int(story_id)
     memcache_key = "%s_comments" % (story_id)
@@ -108,6 +112,7 @@ def comments(story_id):
 
 
 @app.route('/get/trends', methods=['GET'])
+@crossdomain(origin='*')
 def trends():
     '''
     Returns currently trending topics.
