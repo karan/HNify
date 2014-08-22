@@ -67,9 +67,9 @@ def get_stories(story_type):
     story_type = str(story_type)
     limit = request.args.get('limit')
     limit = int(limit) if limit is not None else 30
-    
+
     temp_cache = mc.get(story_type) # get the cache from memory
-    
+
     if temp_cache is not None and len(temp_cache['stories']) >= limit:
         # we have enough in cache already
         return jsonify({'stories': temp_cache['stories'][:limit]})
@@ -131,17 +131,17 @@ def get_trends():
     Returns a list of trending topics on HN.
     '''
     hn = HN()
-    
+
     titles = [story.title for story in hn.get_stories(limit=90)]
 
     one_grams = [] # list of 1-grams
     two_grams = [] # list of 2-grams
-    
+
     # Single word regex
     one_word_pat = re.compile('[A-Z][A-Za-z.]+')
     # Two consecutive word @ http://regex101.com/r/xE2vT0
     two_word_pat = re.compile('(?=((?<![A-Za-z.])[A-Z][a-z.]*[\s-][A-Z][a-z.]+))')
-    
+
     for title in titles:
         # get list of capitalized words
         one_words = re.findall(one_word_pat, title)
@@ -150,30 +150,30 @@ def get_trends():
         one_grams.extend(one_words)
 
         two_grams.extend(re.findall(two_word_pat, title))
-    
+
     grams = Counter(one_grams).most_common() + Counter(two_grams).most_common()
     return [{'phrase': phrase[0], 'count': phrase[1]} for phrase in grams if phrase[1] > 1]
-     
+
 def serialize(stories):
     '''
     Takes a list of Story objects and returns a list of dict's.
     '''
     result = []
-    
+
     for story in stories:
         result.append(
             {
-                "comments_link": story.comments_link, 
-                "domain": story.domain, 
-                "is_self": story.is_self, 
+                "comments_link": story.comments_link,
+                "domain": story.domain,
+                "is_self": story.is_self,
                 "link": story.link,
-                "num_comments": story.num_comments, 
-                "points": story.points, 
-                "published_time": story.published_time, 
-                "rank": story.rank, 
-                "story_id": story.story_id, 
-                "submitter": story.submitter, 
-                "submitter_profile": story.submitter_profile, 
+                "num_comments": story.num_comments,
+                "points": story.points,
+                "published_time": story.published_time,
+                "rank": story.rank,
+                "story_id": story.story_id,
+                "submitter": story.submitter,
+                "submitter_profile": story.submitter_profile,
                 "title": story.title
             }
         )
